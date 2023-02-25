@@ -338,5 +338,5 @@ void AEnemy::Die( )
 	HideHealthBar( );
 	DisableCapsule( );
 	SetLifeSpan( DeathLifespan );
-	GetCharacterMovement( )->bOrientRotationToMovement = false;
+	GetCharacterMovement( )->bOrientRotationToMovement = false; 
 }
