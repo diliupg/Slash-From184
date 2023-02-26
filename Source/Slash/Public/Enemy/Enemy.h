@@ -47,10 +47,10 @@ private:
 	AActor* CombatTarget;
 
 	UPROPERTY(EditAnywhere )
-	double CombatRadius = 750.f;
+	double CombatRadius = 850.f;
 
 	UPROPERTY( EditAnywhere )
-	double AttackRadius = 150.f;
+	double AttackRadius = 170.f;
 
 	/*
 	* Navigation
@@ -127,6 +127,7 @@ protected:
 	virtual bool CanAttack( ) override; 
 	virtual void HandleDamage( float DamageAmount ) override ;
 	virtual int32 PlayDeathMontage() override;
+	virtual void AttackEnd( ) override;
 
 	UPROPERTY(EditAnywhere, Category = Combat )
 	float DeathLifespan = 8.f;
