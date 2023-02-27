@@ -23,35 +23,23 @@ class SLASH_API ASlashCharacter : public ABaseCharacter
 public:
 
 	ASlashCharacter();
+	virtual void Tick( float DeltaTime ) override;
+	virtual void SetupPlayerInputComponent( class UInputComponent* PlayerInputComponent ) override;
 
 	UPROPERTY( EditAnywhere )
 	float MaxAngle;
 	UPROPERTY( EditAnywhere )
 	float MinAngle;
 
-	virtual void Tick( float DeltaTime ) override;
-
-	virtual void SetupPlayerInputComponent( class UInputComponent* PlayerInputComponent ) override;
-
 	virtual void Jump( ) override;
 
 	void EKeyPressed( );
-
-	
 
 protected:
 
 	virtual void BeginPlay() override;
 
-	UPROPERTY( VisibleAnywhere )
-	USpringArmComponent* CameraBoom;
-
-	UPROPERTY( VisibleAnywhere )
-	UCameraComponent* ViewCamera;
-
-	/**
-	 * Callback for Input
-	 */
+	/* Callback for Input */
 
 	UPROPERTY( EditAnywhere, Category = Input )
 	TObjectPtr<UInputMappingContext> SlashContext;
@@ -79,16 +67,14 @@ protected:
 
 	virtual void Attack( ) override;
 
-	/*
-	* Play Montage Functions
-	*/
+	/* 	* Play Montage Functions */
 	 
 	virtual void AttackEnd( ) override ;
 	virtual bool CanAttack( ) override; 
-
-	void PlayEqipMontage(const FName SectionName);
 	bool CanDisarm();
 	bool CanArm( );
+	void PlayEqipMontage(const FName SectionName);
+	
 
 	UFUNCTION(BlueprintCallable )
 	void Disarm();
@@ -101,20 +87,24 @@ protected:
 	 
 private:
 
-	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+	/* Character Components */
 
-	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true") )
-	EActionState ActionState = EActionState::EAS_Unoccupied;
+	UPROPERTY( VisibleAnywhere )
+	USpringArmComponent* CameraBoom;
+
+	UPROPERTY( VisibleAnywhere )
+	UCameraComponent* ViewCamera;
 
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
 
-	
-
-
-
 	UPROPERTY( EditDefaultsOnly, Category = Montages )
 	UAnimMontage* EquipMontage; // Arm and Disarm
+
+	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+
+	UPROPERTY( BlueprintReadWrite, meta = (AllowPrivateAccess = "true") )
+	EActionState ActionState = EActionState::EAS_Unoccupied;
 
 public:
 
