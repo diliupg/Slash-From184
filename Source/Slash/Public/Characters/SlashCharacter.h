@@ -23,24 +23,17 @@ class SLASH_API ASlashCharacter : public ABaseCharacter
 public:
 
 	ASlashCharacter();
-	virtual void Tick( float DeltaTime ) override;
+
 	virtual void SetupPlayerInputComponent( class UInputComponent* PlayerInputComponent ) override;
+
+protected:
 
 	UPROPERTY( EditAnywhere )
 	float MaxAngle;
 	UPROPERTY( EditAnywhere )
 	float MinAngle;
 
-	virtual void Jump( ) override;
-
-	void EKeyPressed( );
-
-protected:
-
-	virtual void BeginPlay() override;
-
 	/* Callback for Input */
-
 	UPROPERTY( EditAnywhere, Category = Input )
 	TObjectPtr<UInputMappingContext> SlashContext;
 
@@ -62,29 +55,35 @@ protected:
 	UPROPERTY( EditAnywhere, Category = Input )
 	TObjectPtr<UInputAction> DodgeAction;
 
+	virtual void BeginPlay() override;
+
 	void Move( const FInputActionValue& Value );
 	void Look( const FInputActionValue& Value );
 
-	virtual void Attack( ) override;
-
-	/* 	* Play Montage Functions */
-	 
+	virtual void Jump( ) override;
+	virtual bool CanAttack( ) override;
+	virtual void Attack( ) override;	 
 	virtual void AttackEnd( ) override ;
-	virtual bool CanAttack( ) override; 
+	
 	bool CanDisarm();
 	bool CanArm( );
-	void PlayEqipMontage(const FName SectionName);
-	
-
-	UFUNCTION(BlueprintCallable )
-	void Disarm();
-
-	UFUNCTION( BlueprintCallable )
+	void Disarm( );
 	void Arm( );
 
 	UFUNCTION( BlueprintCallable )
+	void AttachWeaponToHand( );
+	UFUNCTION(BlueprintCallable )
+	void AttachWeaponToBack();
+
+	void EKeyPressed( );
+
+	void EquipWeapon( AWeapon* Weapon );
+
+	UFUNCTION( BlueprintCallable )
 	void FinishEquipping( );
-	 
+
+	void PlayEqipMontage(const FName SectionName);
+	
 private:
 
 	/* Character Components */
