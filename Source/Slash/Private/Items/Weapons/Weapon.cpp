@@ -79,17 +79,24 @@ void AWeapon::AttachMeshToSocket( USceneComponent* InParent, FName SocketName )
 
 void AWeapon::OnBoxOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult )
 {
+	if ( ActorIsSameType( OtherActor ) ) return;
+
 	FHitResult BoxHit;
 	BoxTrace( BoxHit );
 
 	if ( BoxHit.GetActor( ) )
 	{
-		UGameplayStatics::ApplyDamage( BoxHit.GetActor( ), Damage, GetInstigator( )->GetController( ), this, UDamageType::StaticClass( ) );
+		if ( ActorIsSameType( OtherActor ) ) return;
 
-		ExecuteBoxHit( BoxHit );
-		
+		UGameplayStatics::ApplyDamage( BoxHit.GetActor( ), Damage, GetInstigator( )->GetController( ), this, UDamageType::StaticClass( ) );
+		ExecuteBoxHit( BoxHit );		
 		CreateFields( BoxHit.ImpactPoint );	 
 	}
+}
+
+bool AWeapon::ActorIsSameType( AActor* OtherActor )
+{
+	return GetOwner( )->ActorHasTag( TEXT( "Enemy" ) ) && OtherActor->ActorHasTag( TEXT( "Enemy" ) );
 }
 
 void AWeapon::ExecuteBoxHit( FHitResult& BoxHit )

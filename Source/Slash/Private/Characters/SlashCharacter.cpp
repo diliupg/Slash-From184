@@ -5,6 +5,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -26,6 +27,12 @@ ASlashCharacter::ASlashCharacter():
 	
 	GetCharacterMovement( )->bOrientRotationToMovement = true;
 	GetCharacterMovement( )->RotationRate = FRotator( 0.f, 400.f, 0.f );
+
+	GetMesh( )->SetCollisionObjectType( ECollisionChannel::ECC_WorldDynamic );
+	GetMesh( )->SetCollisionResponseToAllChannels( ECollisionResponse::ECR_Ignore );
+	GetMesh( )->SetCollisionResponseToChannel( ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block );
+	GetMesh( )->SetCollisionResponseToChannel( ECollisionChannel::ECC_WorldDynamic, ECollisionResponse::ECR_Overlap );
+	GetMesh( )->SetGenerateOverlapEvents( true );
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>( TEXT( "CameraBoom" ) );
 	CameraBoom->SetupAttachment( GetRootComponent( ) );
@@ -60,7 +67,7 @@ void ASlashCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Tags.Add( FName( "SlashCharacter" ) );
+	Tags.Add( FName( "EngagebleTarget" ) );
 
 	// == my code to limit camera pitch ==
 	APlayerController* PlayerController = Cast<APlayerController>( GetController( ) );
