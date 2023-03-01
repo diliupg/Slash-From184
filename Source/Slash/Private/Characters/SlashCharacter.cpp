@@ -50,6 +50,12 @@ void ASlashCharacter::SetupPlayerInputComponent( UInputComponent* PlayerInputCom
 	}
 }
 
+void ASlashCharacter::GetHit_Implementation( const FVector& ImpactPoint )
+{
+	PlayHitSound( ImpactPoint );
+	SpawnHitParticles( ImpactPoint );
+}
+
 void ASlashCharacter::BeginPlay()
 {
 	Super::BeginPlay();
