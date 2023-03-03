@@ -21,7 +21,7 @@ ASlashCharacter::ASlashCharacter():
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
-	bUseControllerRotationPitch = false;
+	bUseControllerRotationPitch = false; 
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 	
@@ -60,6 +60,8 @@ void ASlashCharacter::SetupPlayerInputComponent( UInputComponent* PlayerInputCom
 void ASlashCharacter::GetHit_Implementation( const FVector& ImpactPoint )
 {
 	Super::GetHit_Implementation( ImpactPoint );
+
+	ActionState = EActionState::EAS_HitReaction;
 }
 
 void ASlashCharacter::BeginPlay()
@@ -115,6 +117,34 @@ void ASlashCharacter::Jump( )
 	Super::Jump( );
 }
 	 
+void ASlashCharacter::EKeyPressed( )
+{
+	AWeapon* OverlappingWeapon = Cast<AWeapon>( OverlappingItem );
+	if ( OverlappingWeapon )
+	{
+		EquipWeapon( OverlappingWeapon );
+	}
+	else
+	{
+		if ( CanDisarm( ) )
+		{
+			Disarm( );
+		}
+		else if ( CanArm( ) )
+		{
+			Arm( );
+		}
+	}
+}
+
+void ASlashCharacter::EquipWeapon( AWeapon* Weapon )
+{
+	Weapon->Equip( GetMesh( ), FName( "RightHandSocket" ), this, this );
+	CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+	OverlappingItem = nullptr;
+	EquippedWeapon = Weapon;
+}
+
 bool ASlashCharacter::CanAttack( )
 {
 	return ActionState == EActionState::EAS_Unoccupied &&
@@ -164,6 +194,15 @@ void ASlashCharacter::Arm( )
 	ActionState = EActionState::EAS_EquippingWeapon;
 }
 
+void ASlashCharacter::PlayEqipMontage( const FName SectionName )
+{
+	UAnimInstance* AnimInstance = GetMesh( )->GetAnimInstance( );
+	if ( AnimInstance && EquipMontage )
+	{
+		AnimInstance->Montage_Play( EquipMontage );
+		AnimInstance->Montage_JumpToSection( SectionName, EquipMontage );
+	}
+}
 
 void ASlashCharacter::AttachWeaponToHand( ) // attach sword to hand socket
 {
@@ -181,45 +220,13 @@ void ASlashCharacter::AttachWeaponToBack( ) // attach sword to spine socket
 	}
 }
 
-void ASlashCharacter::EKeyPressed( )
-{
-	AWeapon* OverlappingWeapon = Cast<AWeapon>( OverlappingItem );
-	if ( OverlappingWeapon )
-	{
-		EquipWeapon( OverlappingWeapon );
-	}
-	else
-	{
-		if ( CanDisarm() )
-		{
-			Disarm( );
-		}
-		else if ( CanArm( ) )
-		{
-			Arm( );
-		}
-	} 
-}
-
-void ASlashCharacter::EquipWeapon( AWeapon* Weapon )
-{
-	Weapon->Equip( GetMesh( ), FName( "RightHandSocket" ), this, this );
-	CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
-	OverlappingItem = nullptr;
-	EquippedWeapon = Weapon;
-}
-
 void ASlashCharacter::FinishEquipping( )
 {
 	ActionState = EActionState::EAS_Unoccupied;
 }
 
-void ASlashCharacter::PlayEqipMontage( const FName SectionName )
-{ 
-	UAnimInstance* AnimInstance = GetMesh( )->GetAnimInstance( );
-	if ( AnimInstance && EquipMontage )
-	{
-		AnimInstance->Montage_Play( EquipMontage );
-		AnimInstance->Montage_JumpToSection( SectionName, EquipMontage );
-	}
+void ASlashCharacter::HitReactEnd( )
+{
+	ActionState = EActionState::EAS_Unoccupied;
 }
+

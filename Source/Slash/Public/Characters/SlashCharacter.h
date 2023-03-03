@@ -28,6 +28,8 @@ public:
 	virtual void GetHit_Implementation( const FVector& ImpactPoint ) override;
 protected:
 
+	virtual void BeginPlay( ) override;
+
 	UPROPERTY( EditAnywhere )
 	float MaxAngle;
 	UPROPERTY( EditAnywhere )
@@ -55,12 +57,14 @@ protected:
 	UPROPERTY( EditAnywhere, Category = Input )
 	TObjectPtr<UInputAction> DodgeAction;
 
-	virtual void BeginPlay() override;
-
 	void Move( const FInputActionValue& Value );
 	void Look( const FInputActionValue& Value );
-
 	virtual void Jump( ) override;
+
+	void EKeyPressed( );
+
+	void EquipWeapon( AWeapon* Weapon );
+
 	virtual bool CanAttack( ) override;
 	virtual void Attack( ) override;	 
 	virtual void AttackEnd( ) override ;
@@ -69,20 +73,19 @@ protected:
 	bool CanArm( );
 	void Disarm( );
 	void Arm( );
+	void PlayEqipMontage( const FName SectionName );
 
 	UFUNCTION( BlueprintCallable )
 	void AttachWeaponToHand( );
+
 	UFUNCTION(BlueprintCallable )
 	void AttachWeaponToBack();
-
-	void EKeyPressed( );
-
-	void EquipWeapon( AWeapon* Weapon );
 
 	UFUNCTION( BlueprintCallable )
 	void FinishEquipping( );
 
-	void PlayEqipMontage(const FName SectionName);
+	UFUNCTION( BlueprintCallable )
+	void HitReactEnd( );
 	
 private:
 
