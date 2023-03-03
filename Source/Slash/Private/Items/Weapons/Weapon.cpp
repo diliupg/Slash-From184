@@ -89,7 +89,7 @@ void AWeapon::OnBoxOverlap( UPrimitiveComponent* OverlappedComponent, AActor* Ot
 		if ( ActorIsSameType( OtherActor ) ) return;
 
 		UGameplayStatics::ApplyDamage( BoxHit.GetActor( ), Damage, GetInstigator( )->GetController( ), this, UDamageType::StaticClass( ) );
-		ExecuteBoxHit( BoxHit );		
+		ExecuteGetHit( BoxHit );		
 		CreateFields( BoxHit.ImpactPoint );	 
 	}
 }
@@ -99,12 +99,12 @@ bool AWeapon::ActorIsSameType( AActor* OtherActor )
 	return GetOwner( )->ActorHasTag( TEXT( "Enemy" ) ) && OtherActor->ActorHasTag( TEXT( "Enemy" ) );
 }
 
-void AWeapon::ExecuteBoxHit( FHitResult& BoxHit )
+void AWeapon::ExecuteGetHit( FHitResult& BoxHit )
 {
 	IHitInterface* HitInterface = Cast<IHitInterface>( BoxHit.GetActor( ) );
 	if ( HitInterface )
 	{
-		HitInterface->Execute_GetHit( BoxHit.GetActor( ), BoxHit.ImpactPoint );
+		HitInterface->Execute_GetHit( BoxHit.GetActor( ), BoxHit.ImpactPoint, GetOwner() );
 	}
 }
 

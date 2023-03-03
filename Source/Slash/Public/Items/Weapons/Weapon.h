@@ -38,7 +38,7 @@ protected:
 
 	bool ActorIsSameType( AActor* OtherActor );
 
-	void ExecuteBoxHit( FHitResult& BoxHit ); 
+	void ExecuteGetHit( FHitResult& BoxHit ); 
 
 
 	UFUNCTION( BlueprintImplementableEvent )
