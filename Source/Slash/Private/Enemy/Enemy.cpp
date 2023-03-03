@@ -57,7 +57,7 @@ float AEnemy::TakeDamage( float DamageAmount, struct FDamageEvent const& DamageE
 	ChaseTarget( );
 	return DamageAmount;
 }
-
+ 
 void AEnemy::Destroyed( )
 {
 	if ( EquippedWeapon )
@@ -68,16 +68,8 @@ void AEnemy::Destroyed( )
 
 void AEnemy::GetHit_Implementation( const FVector& ImpactPoint )
 {
+	Super::GetHit_Implementation( ImpactPoint );
 	ShowHealthBar( );
-
-	if ( IsAlive( ) )
-	{
-		DirectionalHitReact( ImpactPoint );
-	}
-	else Die( );
-
-	PlayHitSound( ImpactPoint );
-	SpawnHitParticles( ImpactPoint );
 }
 
 void AEnemy::BeginPlay( )
