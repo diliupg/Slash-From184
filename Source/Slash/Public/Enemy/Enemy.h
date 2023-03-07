@@ -29,7 +29,6 @@ public:
 	virtual void GetHit_Implementation( const FVector& ImpactPoint, AActor* Hitter ) override;
 	/* </IHitInterace> */
 
-
 protected:
 	/* <AActor> */
 	virtual void BeginPlay( ) override;
@@ -42,7 +41,6 @@ protected:
 	virtual void AttackEnd( ) override;
 	virtual void HandleDamage( float DamageAmount ) override;
 	virtual int32 PlayDeathMontage( ) override;
-	
 	/* </ABaseCharacter> */
 
 	UPROPERTY( BlueprintReadOnly )
@@ -115,9 +113,9 @@ private:
 	FTimerHandle PatrolTimer;
 	
 	UPROPERTY( EditAnywhere, Category = AINavigation )
-	float PatrolWaitMin = 5.f;
+	float PatrolWaitMin = 3.f;
 	UPROPERTY( EditAnywhere, Category = AINavigation )
-	float PatrolWaitMax = 10.f;
+	float PatrolWaitMax = 6.f;
 
 	UPROPERTY( EditAnywhere, Category = Combat )
 	float PatrollingSpeed = 125.f;
@@ -125,9 +123,9 @@ private:
 	FTimerHandle AttackTimer;
 	
 	UPROPERTY( EditAnywhere, Category = Combat )
-	float AttackMin = 0.5f;
+	float AttackMin = 0.2f;
 	UPROPERTY( EditAnywhere, Category = Combat )
-	float AttackMax = 1.f;
+	float AttackMax = 0.8f;
 
 	UPROPERTY( EditAnywhere, Category = Combat )
 	float chaseSpeed = 300.f;
