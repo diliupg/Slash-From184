@@ -63,7 +63,17 @@ void ASlashCharacter::SetupPlayerInputComponent( UInputComponent* PlayerInputCom
 float ASlashCharacter::TakeDamage( float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser )
 {
 	HandleDamage( DamageAmount );
+	SetHUDHealth( );
+
 	return DamageAmount;
+}
+
+void ASlashCharacter::SetHUDHealth( )
+{
+	if ( SlashOverlay && Attributes )
+	{
+		SlashOverlay->SetHealthBarPercent( Attributes->GetHealthPercent( ) );
+	}
 }
 
 void ASlashCharacter::GetHit_Implementation( const FVector& ImpactPoint, AActor* Hitter )
@@ -156,9 +166,18 @@ void ASlashCharacter::Look( const FInputActionValue& Value )
 
 void ASlashCharacter::Jump( )
 {
-	Super::Jump( );
+	if ( IsUnOccupied( ) )
+	{
+		Super::Jump( );
+	}
+	
 }
 	 
+bool ASlashCharacter::IsUnOccupied( )
+{
+	return ActionState == EActionState::EAS_Unoccupied;
+}
+
 void ASlashCharacter::EKeyPressed( )
 {
 	AWeapon* OverlappingWeapon = Cast<AWeapon>( OverlappingItem );

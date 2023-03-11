@@ -26,7 +26,9 @@ public:
 	ASlashCharacter();
 
 	virtual void SetupPlayerInputComponent( class UInputComponent* PlayerInputComponent ) override;
+
 	virtual float TakeDamage( float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser ) override;
+
 	virtual void GetHit_Implementation( const FVector& ImpactPoint, AActor* Hitter ) override;
 
 protected:
@@ -70,6 +72,8 @@ protected:
 	void Look( const FInputActionValue& Value );
 	virtual void Jump( ) override;
 
+	bool IsUnOccupied( );
+
 	void EKeyPressed( );
 
 	void EquipWeapon( AWeapon* Weapon );
@@ -97,6 +101,8 @@ protected:
 	void HitReactEnd( );
 	
 private:
+
+	void SetHUDHealth( );
 
 	/* Character Components */
 	UPROPERTY( VisibleAnywhere )
