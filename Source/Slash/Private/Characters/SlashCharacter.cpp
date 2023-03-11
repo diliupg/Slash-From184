@@ -7,11 +7,14 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/InputComponent.h"
+#include "Components/AttributeComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Items/Item.h"
 #include "Items/Weapons/Weapon.h" 
 #include "Animation/AnimMontage.h"
+#include "HUD/SlashHUD.h"
+#include "HUD/SlashOverlay.h"
 
 // Sets default values
 ASlashCharacter::ASlashCharacter():
@@ -77,9 +80,36 @@ void ASlashCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	Tags.Add( FName( "EngagebleTarget" ) );
+	
+	GetPlayerController( );
 
 	// == my code to limit camera pitch ==
-	APlayerController* PlayerController = Cast<APlayerController>( GetController( ) );
+	SetCameraPitchAngles( );
+
+	InitializeSlashOverlay( );
+}
+
+void ASlashCharacter::InitializeSlashOverlay( )
+{
+	if ( PlayerController )
+	{
+		ASlashHUD* SlashHUD = Cast<ASlashHUD>( PlayerController->GetHUD( ) );
+		if ( SlashHUD )
+		{
+			SlashOverlay = SlashHUD->GetSlashOverlay( );
+			if ( SlashOverlay && Attributes )
+			{
+				SlashOverlay->SetHealthBarPercent( Attributes->GetHealthPercent( ) );
+				SlashOverlay->SetStaminaBarPercent( 1.f );
+				SlashOverlay->SetGold( 0.f );
+				SlashOverlay->SetSouls( 0.f );
+			}
+		}
+	}
+}
+
+void ASlashCharacter::SetCameraPitchAngles( )
+{
 	if ( PlayerController )
 	{
 		// set camera pitch
@@ -92,7 +122,11 @@ void ASlashCharacter::BeginPlay()
 			Subsystem->AddMappingContext( SlashContext, 0 );
 		}
 	}
-	// =====================================
+}
+
+void ASlashCharacter::GetPlayerController( )
+{
+	PlayerController = Cast<APlayerController>( GetController( ) );
 }
 
 void ASlashCharacter::Move( const FInputActionValue& Value )

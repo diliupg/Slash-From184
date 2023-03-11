@@ -14,6 +14,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class AItem;
 class UAnimMontage;
+class USlashOverlay;
 
 UCLASS()
 class SLASH_API ASlashCharacter : public ABaseCharacter
@@ -31,6 +32,12 @@ public:
 protected:
 
 	virtual void BeginPlay( ) override;
+
+	void InitializeSlashOverlay( );
+
+	void SetCameraPitchAngles( );
+
+	void GetPlayerController( );
 
 	UPROPERTY( EditAnywhere )
 	float MaxAngle;
@@ -108,6 +115,12 @@ private:
 
 	UPROPERTY( BlueprintReadWrite, meta = (AllowPrivateAccess = "true") )
 	EActionState ActionState = EActionState::EAS_Unoccupied;
+
+	UPROPERTY( )
+	USlashOverlay* SlashOverlay;
+
+	UPROPERTY()
+	APlayerController* PlayerController;
 
 public:
 

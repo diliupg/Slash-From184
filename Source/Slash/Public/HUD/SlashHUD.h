@@ -22,6 +22,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = Slash )
 	TSubclassOf<USlashOverlay> SlashOverlayClass;
 
+	UPROPERTY()
 	USlashOverlay* SlashOverlay;
+
+public:
+	FORCEINLINE USlashOverlay* GetSlashOverlay( ) const { return SlashOverlay;  }
 
 };

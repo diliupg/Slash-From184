@@ -31,7 +31,7 @@ void USlashOverlay::SetGold( int32 Gold )
 		GoldText->SetText(FText::FromString(FString::Printf( TEXT( "%d" ), Gold)));
 	}
 }
-
+ 
 void USlashOverlay::SetSouls( int32 Souls )
 {
 	if ( SoulsText )
