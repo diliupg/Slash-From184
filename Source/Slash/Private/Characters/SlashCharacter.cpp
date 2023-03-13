@@ -265,6 +265,13 @@ void ASlashCharacter::PlayEqipMontage( const FName SectionName )
 	}
 }
 
+void ASlashCharacter::Die( )
+{
+	Super::Die( );
+
+	ActionState = EActionState::EAS_Dead;
+}
+
 void ASlashCharacter::AttachWeaponToHand( ) // attach sword to hand socket
 {
 	if ( EquippedWeapon )

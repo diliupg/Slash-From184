@@ -87,6 +87,7 @@ protected:
 	void Disarm( );
 	void Arm( );
 	void PlayEqipMontage( const FName SectionName );
+	virtual void Die( ) override;
 
 	UFUNCTION( BlueprintCallable )
 	void AttachWeaponToHand( );
