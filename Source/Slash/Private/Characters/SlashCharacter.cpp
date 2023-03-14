@@ -82,7 +82,10 @@ void ASlashCharacter::GetHit_Implementation( const FVector& ImpactPoint, AActor*
 
 	SetWeaponCollisionEnabled( ECollisionEnabled::NoCollision );
 
-	ActionState = EActionState::EAS_HitReaction;
+	if ( Attributes && Attributes->GetHealthPercent( ) > 0.f )
+	{
+		ActionState = EActionState::EAS_HitReaction;
+	}
 }
 
 void ASlashCharacter::BeginPlay()
@@ -270,6 +273,7 @@ void ASlashCharacter::Die( )
 	Super::Die( );
 
 	ActionState = EActionState::EAS_Dead;
+	DisableMeshCollision( ); // inherited function we implemented in BaseCharacter
 }
 
 void ASlashCharacter::AttachWeaponToHand( ) // attach sword to hand socket

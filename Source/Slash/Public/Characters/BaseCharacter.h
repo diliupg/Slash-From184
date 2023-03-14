@@ -17,7 +17,7 @@ class SLASH_API ABaseCharacter : public ACharacter, public IHitInterface
 {
 	GENERATED_BODY()
 
-public:
+public: 
 	ABaseCharacter();
 	virtual void Tick( float DeltaTime ) override;
 
@@ -35,6 +35,7 @@ protected:
 	void DisableCapsule( );
 	virtual bool CanAttack( );
 	bool IsAlive( );
+	void DisableMeshCollision( );
 
 	/* Montage */
 	void PlayHitReactMontage( const FName SectionName );
@@ -94,4 +95,8 @@ private:
 
 	UPROPERTY( EditAnywhere, Category = Combat )
 	TArray<FName> DeathMontageSections;
+
+public:
+
+	FORCEINLINE TEnumAsByte<EDeathPose> GetDeathPose( ) const { return DeathPose; }
 };
