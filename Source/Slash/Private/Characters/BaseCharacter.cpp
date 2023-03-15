@@ -38,11 +38,15 @@ void ABaseCharacter::GetHit_Implementation( const FVector& ImpactPoint, AActor* 
 
 void ABaseCharacter::Attack( )
 {
-
+	if ( CombatTarget && CombatTarget->ActorHasTag( FName( "Dead" ) ))
+	{
+		CombatTarget = nullptr; // this prevents attacking after player is dead
+	}
 }
 
 void ABaseCharacter::Die( )
 {
+	Tags.Add( "Dead" );
 	PlayDeathMontage( );
 }
 

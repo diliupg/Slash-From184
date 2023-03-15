@@ -110,8 +110,11 @@ void AEnemy::Die( )
  
 void AEnemy::Attack( )
 {
-	EnemyState = EEnemyState::EES_Engaged;
 	Super::Attack( );
+	if ( CombatTarget == nullptr ) return;
+
+	EnemyState = EEnemyState::EES_Engaged;
+	
 	PlayAttackMontage( );
 }
 
@@ -324,6 +327,8 @@ void AEnemy::SpawnDefaultWeapon( )
 
 void AEnemy::PawnSeen( APawn* SeenPawn )
 {
+	if ( SeenPawn->ActorHasTag( FName( "Dead" ) ) ) return;
+
 	const bool bShouldChaseTarget =
 		EnemyState != EEnemyState::EES_Dead &&
 		EnemyState != EEnemyState::EES_Chasing &&
