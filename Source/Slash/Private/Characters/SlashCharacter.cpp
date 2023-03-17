@@ -68,6 +68,16 @@ float ASlashCharacter::TakeDamage( float DamageAmount, struct FDamageEvent const
 	return DamageAmount;
 }
 
+void ASlashCharacter::SetOverlappingItem( AItem* Item )
+{
+	OverlappingItem = Item;
+}
+
+void ASlashCharacter::AddSouls( ASoul* Soul )
+{
+	UE_LOG( LogTemp, Warning, TEXT( "ASlashCharacter::AddSouls" ) );
+}
+
 void ASlashCharacter::SetHUDHealth( )
 {
 	if ( SlashOverlay && Attributes )

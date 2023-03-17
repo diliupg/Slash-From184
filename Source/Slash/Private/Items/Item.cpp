@@ -5,7 +5,7 @@
 #include "Slash/DebugMacros.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
-#include "Characters/SlashCharacter.h"
+#include "Interfaces/PickupInterface.h"
 #include "NiagaraComponent.h"
 
 
@@ -13,7 +13,7 @@
 AItem::AItem()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick  = true;
 
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>( TEXT( "ItemMeshComponent" ) );
 	ItemMesh->SetCollisionResponseToAllChannels( ECR_Ignore );
@@ -51,20 +51,20 @@ float AItem::TransformedCos( )
 
 void AItem::OnSphereOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult )
 {
-	ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>( OtherActor );
-	if ( SlashCharacter )
+	IPickupInterface* PickupInterface = Cast<IPickupInterface>( OtherActor );
+	if ( PickupInterface )
 	{
-		SlashCharacter->SetOverlappingItem( this );
+		PickupInterface->SetOverlappingItem( this );
 	}
 }
 
 
 void AItem::OnSphereEndOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex )
 {
-	ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>( OtherActor );
-	if ( SlashCharacter )
+	IPickupInterface* PickupInterface = Cast<IPickupInterface>( OtherActor );
+	if ( PickupInterface )
 	{
-		SlashCharacter->SetOverlappingItem( nullptr );
+		PickupInterface->SetOverlappingItem( nullptr );
 	}
 }
 
