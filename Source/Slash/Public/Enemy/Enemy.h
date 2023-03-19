@@ -36,6 +36,9 @@ protected:
 
 	/* <ABaseCharacter> */
 	virtual void Die( ) override;
+
+	void SpawnSoul( );
+
 	virtual void Attack( ) override;
 	virtual bool CanAttack( ) override;
 	virtual void AttackEnd( ) override;
@@ -131,4 +134,7 @@ private:
 	float WalkSpeed = 150.f;
 	UPROPERTY( EditAnywhere, Category = AINavigation )
 	float RunSpeed = 300.f;
+
+	UPROPERTY( EditAnywhere, Category = Combat )
+	TSubclassOf<class ASoul> SoulClass;
 };
