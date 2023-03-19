@@ -37,6 +37,8 @@ public:
 
 	virtual void AddSouls( ASoul* Soul ) override;
 
+	virtual void AddGold( ATreasure* Treasure ) override;
+
 protected:
 
 	virtual void BeginPlay( ) override;

@@ -14,3 +14,8 @@ void IPickupInterface::AddSouls( class ASoul* Soul )
 {
 
 }
+
+void IPickupInterface::AddGold( class ATreasure* Treasure )
+{
+
+}
