@@ -87,9 +87,12 @@ protected:
 	void EquipWeapon( AWeapon* Weapon );
 
 	virtual bool CanAttack( ) override;
-	virtual void Attack( ) override;	 
-	virtual void AttackEnd( ) override ;
-	
+	virtual void Attack( ) override;	 	
+	void Dodge( );
+
+	virtual void AttackEnd( ) override;
+	virtual void DodgeEnd( ) override;
+
 	bool CanDisarm();
 	bool CanArm( );
 	void Disarm( );
