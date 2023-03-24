@@ -26,6 +26,7 @@ class SLASH_API ASlashCharacter : public ABaseCharacter, public IPickupInterface
 public:
 
 	ASlashCharacter();
+	virtual void Tick( float DeltaTime ) override;
 
 	virtual void SetupPlayerInputComponent( class UInputComponent* PlayerInputComponent ) override;
 
@@ -89,6 +90,10 @@ protected:
 	virtual bool CanAttack( ) override;
 	virtual void Attack( ) override;	 	
 	void Dodge( );
+
+	bool HasEnoughStamina( );
+
+	bool IsOccupied( );
 
 	virtual void AttackEnd( ) override;
 	virtual void DodgeEnd( ) override;

@@ -24,7 +24,7 @@ ASlashCharacter::ASlashCharacter():
 	MinAngle( 45.f )
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	bUseControllerRotationPitch = false; 
 	bUseControllerRotationYaw = false;
@@ -45,6 +45,15 @@ ASlashCharacter::ASlashCharacter():
 
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>( TEXT( "ViewCamera" ) );
 	ViewCamera->SetupAttachment( CameraBoom );
+}
+
+void ASlashCharacter::Tick( float DeltaTime )
+{
+	if ( Attributes && SlashOverlay )
+	{
+		Attributes->RegenStamina( DeltaTime );
+		SlashOverlay->SetStaminaBarPercent( Attributes->GetStaminaPercent( ) );
+	}
 }
 
 void ASlashCharacter::SetupPlayerInputComponent( UInputComponent* PlayerInputComponent )
@@ -263,10 +272,25 @@ void ASlashCharacter::DodgeEnd( )
 
 void ASlashCharacter::Dodge( )
 {
-	if ( ActionState != EActionState::EAS_Unoccupied ) return;
-
+	if ( IsOccupied( ) || !HasEnoughStamina() ) return;
+	
 	PlayDodgeMontage( );
 	ActionState = EActionState::EAS_Dodge;
+	if ( Attributes && SlashOverlay )
+	{
+		Attributes->UseStamina( Attributes->GetDodgeCost( ) );
+		SlashOverlay->SetStaminaBarPercent( Attributes->GetStaminaPercent( ) );
+	}
+}
+
+bool ASlashCharacter::HasEnoughStamina( )
+{
+	return Attributes && Attributes->GetStamina( ) > Attributes->GetDodgeCost();
+}
+
+bool ASlashCharacter::IsOccupied( )
+{
+	return ActionState != EActionState::EAS_Unoccupied;
 }
 
 bool ASlashCharacter::CanDisarm( )
