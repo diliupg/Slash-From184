@@ -49,11 +49,17 @@ ASlashCharacter::ASlashCharacter():
 
 void ASlashCharacter::Tick( float DeltaTime )
 {
+	if ( ActionState == EActionState::EAS_Dead ) return;
+
 	if ( Attributes && SlashOverlay )
 	{
 		Attributes->RegenStamina( DeltaTime );
 		SlashOverlay->SetStaminaBarPercent( Attributes->GetStaminaPercent( ) );
+
+		Attributes->RegenHealth( DeltaTime );
+		SlashOverlay->SetHealthBarPercent( Attributes->GetHealthPercent( ) );
 	}
+
 }
 
 void ASlashCharacter::SetupPlayerInputComponent( UInputComponent* PlayerInputComponent )

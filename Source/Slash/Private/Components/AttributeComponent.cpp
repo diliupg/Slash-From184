@@ -51,13 +51,16 @@ void UAttributeComponent::AddSouls( int32 NumberOfSouls )
 
 void UAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);	
 }
 
 void UAttributeComponent::RegenStamina( float DeltaTime )
 {
 	Stamina = FMath::Clamp( Stamina + StaminaRegenRate * DeltaTime, 0.f, MaxStamina );
+}
+
+void UAttributeComponent::RegenHealth( float DeltaTime )
+{
+	Health = FMath::Clamp( Health + HealthRegenRate * DeltaTime, 0.f, MaxHealth );
 }
 
