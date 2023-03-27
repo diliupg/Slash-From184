@@ -305,7 +305,7 @@ void AEnemy::MoveToTarget( AActor* Target )
 	if ( EnemyController == nullptr || Target == nullptr ) return;
 	FAIMoveRequest MoveRequest;
 	MoveRequest.SetGoalActor( Target );
-	MoveRequest.SetAcceptanceRadius( 60.f );
+	MoveRequest.SetAcceptanceRadius( AcceptanceRadius );
 
 	EnemyController->MoveTo( MoveRequest );
 }
