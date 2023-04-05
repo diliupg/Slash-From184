@@ -336,9 +336,9 @@ void ASlashCharacter::PlayEqipMontage( const FName SectionName )
 	}
 }
 
-void ASlashCharacter::Die( )
+void ASlashCharacter::Die_Implementation( )
 {
-	Super::Die( );
+	Super::Die_Implementation( );
 
 	ActionState = EActionState::EAS_Dead;
 	DisableMeshCollision( ); // inherited function we implemented in BaseCharacter
